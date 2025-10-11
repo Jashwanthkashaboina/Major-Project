@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const Listing = require("./models/listing.js");//to use the model we created in listin.js first we need to require 
+
 main()
     .then(()=>{
         console.log("connected to DB");
@@ -14,6 +16,18 @@ app.get("/",(req,res)=>{
     res.send("Hi! I'm root");
 });
 
+app.get("/testListing",async (req,res)=>{
+    let sampleListing = new Listing({
+        title: "My new Villa",
+        description: "By the beach",
+        price: 1200,
+        location: "Jalandhar",
+        country: "India"
+    });
+    await sampleListing.save();
+    console.log("Sample was saved");
+    res.send("Successful testing");
+});
 app.listen(8080,()=>{
     console.log("Server is listening to port 8080");
 });
