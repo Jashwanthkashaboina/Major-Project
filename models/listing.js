@@ -1,0 +1,24 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema; // we are created this 
+// becuase when every time when we create new schema we need to write like "new mongoose.Schema"
+// instead we can simply use Schema
+const listingSchema = new Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    description: String,
+    image: {
+        type: String,
+        default: "https://unsplash.com/photos/two-brick-row-house-doors-with-numbers-31-and-129-v_J8G-ldyvA",
+        set: (v)=> v === ""? "https://unsplash.com/photos/two-brick-row-house-doors-with-numbers-31-and-129-v_J8G-ldyvA" : v
+    },
+    price: Number,
+    location: String,
+    country: String
+});
+
+//now using the above schema we are creating a model
+const Listing = mongoose.model("Listing",listingSchema);
+//now we are exporting the above model to app.js
+module.exports = Listing;
