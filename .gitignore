@@ -1,0 +1,12 @@
+# Node modules folder (contains dependencies)
+node_modules/
+
+# Environment variables file (contains sensitive info like API keys)
+.env
+
+# Log files
+*.log
+
+# Build and distribution folders (if you have any build process)
+dist/
+build/
