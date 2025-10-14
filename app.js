@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");//to use the model we created in listin.js first we need to require 
 const path = require("path");
-
+const methodOverride = require("method-override");
 main()
     .then(()=>{
         console.log("connected to DB");
@@ -18,6 +18,8 @@ async function main(){
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 app.use(express.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
+
 
 app.get("/",(req,res)=>{
     res.send("Hi! I'm root");
@@ -47,6 +49,21 @@ app.post("/listings",async(req,res)=>{
     await newListing.save();
     res.redirect("/listings");
 });
+//Edit Route
+app.get("/listings/:id/edit",async(req,res)=>{
+    let {id} = req.params;
+    let listing = await Listing.findById(id);
+    res.render("listings/edit.ejs",{listing});
+
+});
+
+//update route
+app.put("/listings/:id",async (req,res)=>{
+    let {id} = req.params;
+    await Listing.findByIdAndUpdate(id,{...req.body.listing});
+    res.redirect(`/listings/${id}`);
+});
+
 
 // app.get("/testListing",async (req,res)=>{
 //     let sampleListing = new Listing({
