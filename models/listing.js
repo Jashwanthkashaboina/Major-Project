@@ -9,14 +9,8 @@ const listingSchema = new Schema({
     },
     description: String,
     image: {
-        filename: {
-            type: String,
-            default: "defaultImage"
-        },
-        url: {
-            type: String,
-            default: "https://unsplash.com/photos/two-brick-row-house-doors-with-numbers-31-and-129-v_J8G-ldyvA"
-        }
+        type: String,
+        default: "https://unsplash.com/photos/two-brick-row-house-doors-with-numbers-31-and-129-v_J8G-ldyvA"
     },
     price: Number,
     location: String,
