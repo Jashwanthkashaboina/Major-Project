@@ -100,3 +100,28 @@ body{
     background-color: #fe424d !important;
     border: none !important;
 }
+
+/* show Page styling */
+.show-img{
+    height: 30vh;
+}
+
+.btns{
+    display: flex;;
+}
+
+/* make <a> and <button> look identical */
+.btns .btn {
+  display: inline-flex;            /* same display behavior */
+  align-items: center;             /* centers text vertically */
+  justify-content: center;         /* centers text horizontally */
+  padding: 0.375rem 0.75rem !important;  /* bootstrap’s default padding */
+  line-height: 1.5 !important;     /* normalize line-height difference */
+  height: 38px !important;         /* set fixed equal height */
+}
+
+.show-card{
+    padding-left: 0;
+    padding-right: 0;
+
+}
