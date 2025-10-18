@@ -49,6 +49,9 @@ app.get("/listings/:id",async(req,res)=>{
 
 //Create Route
 app.post("/listings", async (req, res) => {
+    if (!req.body.listing.image || req.body.listing.image.trim() === "") {
+        req.body.listing.image = "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=60";
+    }
   const newListing = new Listing(req.body.listing);
   await newListing.save();
   res.redirect("/listings");
