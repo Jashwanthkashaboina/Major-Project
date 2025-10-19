@@ -7,6 +7,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const  wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
+const {listingSchema} = require("./schema.js");
 
 main()
     .then(()=>{
@@ -31,6 +32,16 @@ app.get("/",(req,res)=>{
     res.send("Hi! I'm root");
 });
 
+
+const validateListing = (req,res,next)=>{
+    let {error} = listingSchema.validate(req.body.listing);
+    if(error){
+        let errMsg = error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400,errMsg);
+    }
+    else next();
+}
+
 // Index Route
 app.get("/listings",wrapAsync(async(req,res)=>{
     const allListings = await Listing.find({});
@@ -50,11 +61,7 @@ app.get("/listings/:id",wrapAsync(async(req,res)=>{
 }));
 
 //Create Route
-app.post("/listings", wrapAsync(async(req, res) => {
-        if(!req.body.listing){
-            //Sttatus code 400 --- Bad request
-            throw new ExpressError(400,"Send Valid Data for Listing");
-        }
+app.post("/listings", validateListing,wrapAsync(async(req, res) => {
         if (!req.body.listing.image || req.body.listing.image.trim() === "") {
             req.body.listing.image = "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=60";
         }
@@ -75,11 +82,13 @@ app.get("/listings/:id/edit",wrapAsync(async(req,res)=>{
 }));
 
 //update route
-app.put("/listings/:id",wrapAsync(async(req,res)=>{
+app.put("/listings/:id",validateListing, wrapAsync(async(req,res)=>{
     let {id} = req.params;
     await Listing.findByIdAndUpdate(id,{...req.body.listing});
     res.redirect(`/listings/${id}`);
 }));
+
+
 //Delete route
 app.delete("/listings/:id",wrapAsync(async(req,res)=>{
     let {id} = req.params;
