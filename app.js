@@ -8,6 +8,8 @@ const ejsMate = require("ejs-mate");
 const  wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
 const {listingSchema} = require("./schema.js");
+const Review = require("./models/review.js");
+
 
 main()
     .then(()=>{
@@ -95,6 +97,32 @@ app.delete("/listings/:id",wrapAsync(async(req,res)=>{
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings");
 }));
+
+
+//Reviews 
+//In that POST Route
+//this is going to be async bcoz we are storing in database it is a async operation
+app.post("/listings/:id/reviews",async(req,res)=>{
+
+    // console.log("✅ Review route reached!");
+    // console.log("Body:", req.body);
+    // res.send("Route reached!");
+
+
+    let listing = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
+
+    listing.reviews.push(newReview); 
+    //the above line .....we have one listing means detail view
+    // In that we are pushing our review to the review part....means
+    //listing.reviews.push(newReview);
+
+    await newReview.save();
+    await listing.save(); // we need to await this bcoz we made changes in existing doc
+    //so we need to save the changes
+
+    res.redirect(`/listings/${listing._id}`);
+});
 
 // app.get("/testListing",async (req,res)=>{
 //     let sampleListing = new Listing({
