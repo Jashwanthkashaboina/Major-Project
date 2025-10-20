@@ -7,7 +7,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const  wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const {listingSchema} = require("./schema.js");
+const {listingSchema,reviewSchema} = require("./schema.js");
 const Review = require("./models/review.js");
 
 
@@ -34,11 +34,20 @@ app.get("/",(req,res)=>{
     res.send("Hi! I'm root");
 });
 
-
+//This is  a MiddleWare for server side validations
 const validateListing = (req,res,next)=>{
     let {error} = listingSchema.validate(req.body);
     if(error){
         //let errMsg = error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400,error.toString());
+    }
+    else next();
+}
+
+
+const validateReview = (req,res,next)=>{
+    let {error} = reviewSchema.validate(req.body);
+    if(error){
         throw new ExpressError(400,error.toString());
     }
     else next();
@@ -58,7 +67,7 @@ app.get("/listings/new",(req,res)=>{
 //show route
 app.get("/listings/:id",wrapAsync(async(req,res)=>{
     let {id} = req.params;
-    const listing = await Listing.findById(id);
+    const listing = await Listing.findById(id).populate("reviews");
     res.render("listings/show.ejs",{ listing });
 }));
 
@@ -102,10 +111,10 @@ app.delete("/listings/:id",wrapAsync(async(req,res)=>{
 //Reviews 
 //In that POST Route
 //this is going to be async bcoz we are storing in database it is a async operation
-app.post("/listings/:id/reviews",async(req,res)=>{
+app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
 
-    // console.log("✅ Review route reached!");
-    // console.log("Body:", req.body);
+    // console.log("✅ Review route reached!");--- we can debug like this
+    // console.log("Body:", req.body); 
     // res.send("Route reached!");
 
 
@@ -122,7 +131,7 @@ app.post("/listings/:id/reviews",async(req,res)=>{
     //so we need to save the changes
 
     res.redirect(`/listings/${listing._id}`);
-});
+}));
 
 // app.get("/testListing",async (req,res)=>{
 //     let sampleListing = new Listing({
