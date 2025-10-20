@@ -109,7 +109,7 @@ app.delete("/listings/:id",wrapAsync(async(req,res)=>{
 
 
 //Reviews 
-//In that POST Route
+//This is  POST Review Route
 //this is going to be async bcoz we are storing in database it is a async operation
 app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
 
@@ -131,6 +131,23 @@ app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
     //so we need to save the changes
 
     res.redirect(`/listings/${listing._id}`);
+}));
+
+//Delete Review Route
+app.delete("/listings/:id/reviews/:reviewId",wrapAsync(async(req,res)=>{
+    let {id,reviewId} = req.params;
+    //we need to delete from review from reviews section 
+    //And we need to delete it from database mean reviews array of listing
+    // the following steps do 
+    // 1.delete that review from reviews array
+
+    await Listing.findByIdAndUpdate(id,{$pull: {reviews: reviewId}});
+
+    //2. Delete it from the reviews section
+
+    await Review.findByIdAndDelete(reviewId);
+
+    res.redirect(`/listings/${id}`);
 }));
 
 // app.get("/testListing",async (req,res)=>{
