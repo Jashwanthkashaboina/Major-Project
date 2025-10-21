@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const  wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
-const {listingSchema,reviewSchema} = require("../schema.js");
-const Listing = require("../models/listing.js");
+const { listingSchema } = require("../schema.js");
+const Listing = require("../models/listing.js");//to use the model we created in listin.js first we need to require 
 
 //This is  a MiddleWare for server side validations
 const validateListing = (req,res,next)=>{
