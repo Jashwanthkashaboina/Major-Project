@@ -7,3 +7,11 @@
 <!-- Here success is array when we set a condition 
 to flash ... means when we added a new Listing the message needs to flash
 but it appears becuase the array will exist ... so we need to set one more condition that is succes.lenght>0 -->
+
+
+<% if(error && error.length){ %>
+    <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
+        <%= error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<%}%>
