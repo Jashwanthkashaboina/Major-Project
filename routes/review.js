@@ -36,7 +36,7 @@ router.post("/",validateReview,wrapAsync(async(req,res)=>{
     await newReview.save();
     await listing.save(); // we need to await this bcoz we made changes in existing doc
     //so we need to save the changes
-
+    req.flash("success","New Review Added");
     res.redirect(`/listings/${listing._id}`);
 }));
 
@@ -53,7 +53,7 @@ router.delete("/:reviewId",wrapAsync(async(req,res)=>{
     //2. Delete it from the reviews section
 
     await Review.findByIdAndDelete(reviewId);
-
+    req.flash("success","Review Deleted!");
     res.redirect(`/listings/${id}`);
 }));
 

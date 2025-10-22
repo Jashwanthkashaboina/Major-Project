@@ -6,6 +6,13 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
+const flash = require("connect-flash");
+
+
+//we need to use flash above this routes only bcoz with help this routes we'll use flash
+//These are from route -- express router
+const listings = require("./routes/listing.js");
+const reviews = require("./routes/review.js");
 
 const sessionOptions = {
     secret: "mysupersecret",
@@ -18,18 +25,14 @@ const sessionOptions = {
     },
 };
 
-app.use(session(sessionOptions));
 
-//These are from route -- express router
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js");
 
 main()
-    .then(()=>{
-        console.log("connected to DB");
-    }).catch((err)=>{
-        console.log(err);
-    });
+.then(()=>{
+    console.log("connected to DB");
+}).catch((err)=>{
+    console.log(err);
+});
 async function main(){
     await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
 }
@@ -47,6 +50,14 @@ app.get("/",(req,res)=>{
     res.send("Hi! I'm root");
 });
 
+app.use(session(sessionOptions));
+app.use(flash());
+
+//Middle Ware
+app.use((req,res,next)=>{
+    res.locals.success = req.flash("success");
+    next();
+});
 
 app.use("/listings",listings);
 app.use("/listings/:id/reviews",reviews);
