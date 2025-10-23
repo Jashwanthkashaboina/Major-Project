@@ -7,7 +7,9 @@ const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
 const flash = require("connect-flash");
-
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
 
 //we need to use flash above this routes only bcoz with help this routes we'll use flash
 //These are from route -- express router
@@ -52,6 +54,17 @@ app.get("/",(req,res)=>{
 
 app.use(session(sessionOptions));
 app.use(flash());
+
+//we need to use passport below it becuase ...to implement localStrategy we need session
+//so repeatedly it is not required to login every time so... we need to use it here
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 
 //Middle Ware
 app.use((req,res,next)=>{
