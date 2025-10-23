@@ -75,17 +75,17 @@ app.use((req,res,next)=>{
 });
 
 //Creating Demo User
-app.get("/demouser",async(req,res)=>{
-    let fakeUser = new User({
-        email: "student@gmail.com",
-        username: "delta-student"
-    });
-    //register is a static method 
-    //it a gives convenience method to register a new user instance with given password
-    //And also checks if username is unique or not
-    let registeredUser = await User.register(fakeUser,"helloworld");
-    res.send(registeredUser);
-});
+// app.get("/demouser",async(req,res)=>{
+//     let fakeUser = new User({
+//         email: "student@gmail.com",
+//         username: "delta-student"
+//     });
+//     //register is a static method 
+//     //it a gives convenience method to register a new user instance with given password
+//     //And also checks if username is unique or not
+//     let registeredUser = await User.register(fakeUser,"helloworld");
+//     res.send(registeredUser);
+// });
 
 
 app.use("/listings",listingRouter);
