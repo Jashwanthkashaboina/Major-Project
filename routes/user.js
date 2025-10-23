@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 
 
 router.get("/signup",(req,res)=>{
-    res.send("Form !");
+    res.render("users/signup");
 });
 
 module.exports = router;
