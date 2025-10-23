@@ -13,8 +13,9 @@ const User = require("./models/user.js");
 
 //we need to use flash above this routes only bcoz with help this routes we'll use flash
 //These are from route -- express router
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js");
+const listingRouter = require("./routes/listing.js");
+const reviewRouter = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
 
 const sessionOptions = {
     secret: "mysupersecret",
@@ -73,9 +74,23 @@ app.use((req,res,next)=>{
     next();
 });
 
-app.use("/listings",listings);
-app.use("/listings/:id/reviews",reviews);
+//Creating Demo User
+app.get("/demouser",async(req,res)=>{
+    let fakeUser = new User({
+        email: "student@gmail.com",
+        username: "delta-student"
+    });
+    //register is a static method 
+    //it a gives convenience method to register a new user instance with given password
+    //And also checks if username is unique or not
+    let registeredUser = await User.register(fakeUser,"helloworld");
+    res.send(registeredUser);
+});
 
+
+app.use("/listings",listingRouter);
+app.use("/listings/:id/reviews",reviewRouter);
+app.use("/",userRouter);
 
 app.use((req,res,next)=>{
     next(new ExpressError(404,"Page Not Found"));
