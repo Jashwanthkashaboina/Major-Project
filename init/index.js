@@ -16,6 +16,12 @@ const mongoose = require("mongoose");
 
  const initDB = async()=>{
     await Listing.deleteMany({});
+    initData.data = initData.data.map((obj) =>({
+        ...obj,
+        owner: "68fa1abaad4d976ba7b42067",
+        }
+    ));
+    console.log(initData.data);
     await Listing.insertMany(initData.data); // we are using initData.data bcoz it is a object..in that object we need data
     console.log("data was inititalized");
 

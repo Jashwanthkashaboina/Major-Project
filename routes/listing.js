@@ -30,12 +30,13 @@ router.get("/new",isLoggedIn,(req,res)=>{
 //show route
 router.get("/:id",wrapAsync(async(req,res)=>{
     let {id} = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
+    const listing = await Listing.findById(id).populate("reviews").populate("owner");
     if(!listing){
         req.flash("error","Listing you requested for does not exists");
         res.redirect("/listings");
         return;
     }
+    console.log(listing);
     res.render("listings/show.ejs",{ listing });
 }));
 
@@ -45,6 +46,11 @@ router.post("/", isLoggedIn,validateListing,wrapAsync(async(req, res) => {
             req.body.listing.image = "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=60";
         }
         const newListing = new Listing(req.body.listing);
+        //every time when we create listingg by default owner is not stored as we didnt created in schema
+        // so first we need to store the curr user information
+        //we know that passport store the user related info... in req.user 
+        //req.user has access to many 
+        newListing.owner = req.user._id;
         await newListing.save();
         req.flash("success","New Listing created !");
         res.redirect("/listings");
