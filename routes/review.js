@@ -1,21 +1,9 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const  wrapAsync = require("../utils/wrapAsync.js");
-const ExpressError = require("../utils/ExpressError.js");
-const { reviewSchema } = require("../schema.js");
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
-
-
-const validateReview = (req,res,next)=>{
-    let {error} = reviewSchema.validate(req.body);
-    if(error){
-        throw new ExpressError(400,error.toString());
-    }
-    else next();
-}
-
-
+const { validateReview } = require("../middleware.js");
 //Reviews 
 //This is  POST Review Route
 //this is going to be async bcoz we are storing in database it is a async operation
