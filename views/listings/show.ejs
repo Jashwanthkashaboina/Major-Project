@@ -17,13 +17,15 @@
             </div>
     </div>
     <br/>
-    <div class="btns mt-3">
-        <a href="/listings/<%=listing._id%>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
-        <br/><br/>
-        <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
-            <button class="btn btn-dark offset-5">Delete</button>
-        </form>
-    </div>
+    <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
+        <div class="btns mt-3">
+            <a href="/listings/<%=listing._id%>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
+            <br/><br/>
+            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+                <button class="btn btn-dark offset-5">Delete</button>
+            </form>
+        </div>
+    <% } %>
     <hr/>
     <div class="col-8 offset-3 mb-3">
         <h4>Leave a Review</h4>
