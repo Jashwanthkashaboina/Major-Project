@@ -2,7 +2,7 @@ const Listing = require("./models/listing");
 const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema,reviewSchema } = require("./schema.js");
 
-
+//Authentication Middleware
 module.exports.isLoggedIn = (req,res,next)=>{
     if(!req.isAuthenticated()){
         req.session.redirectUrl = req.originalUrl;
@@ -12,6 +12,7 @@ module.exports.isLoggedIn = (req,res,next)=>{
     next();
 }
 
+//Middleware to save redirect url
 module.exports.savedRedirectUrl = (req,res,next)=>{
     if(req.session.redirectUrl){
         res.locals.redirectUrl = req.session.redirectUrl;
@@ -19,7 +20,7 @@ module.exports.savedRedirectUrl = (req,res,next)=>{
     next();
 }
 
-
+//Ownership Middlware
 module.exports.isOwner = async(req,res,next)=>{
     let { id }  = req.params;
     let listing = await Listing.findById(id);
@@ -30,7 +31,7 @@ module.exports.isOwner = async(req,res,next)=>{
     next();
 }
 
-
+//Listing Validation Middleware
 module.exports.validateListing = (req,res,next)=>{
     let {error} = listingSchema.validate(req.body);
     if(error){
