@@ -4,7 +4,7 @@ const  wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const { listingSchema } = require("../schema.js");
 const Listing = require("../models/listing.js");//to use the model we created in listin.js first we need to require 
-
+const {isLoggedIn} = require("../middleware.js");
 //This is  a MiddleWare for server side validations
 const validateListing = (req,res,next)=>{
     let {error} = listingSchema.validate(req.body);
@@ -23,7 +23,7 @@ router.get("/",wrapAsync(async(req,res)=>{
 }));
 
 // New Route -- To create a new Listing
-router.get("/new",(req,res)=>{
+router.get("/new",isLoggedIn,(req,res)=>{
     res.render("listings/new.ejs");
 });
 
@@ -40,7 +40,7 @@ router.get("/:id",wrapAsync(async(req,res)=>{
 }));
 
 //Create Route
-router.post("/", validateListing,wrapAsync(async(req, res) => {
+router.post("/", isLoggedIn,validateListing,wrapAsync(async(req, res) => {
         if (!req.body.listing.image || req.body.listing.image.trim() === "") {
             req.body.listing.image = "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=60";
         }
@@ -54,7 +54,7 @@ router.post("/", validateListing,wrapAsync(async(req, res) => {
 
 
 //Edit Route
-router.get("/:id/edit",wrapAsync(async(req,res)=>{
+router.get("/:id/edit",isLoggedIn,wrapAsync(async(req,res)=>{
     let {id} = req.params;
     let listing = await Listing.findById(id);
     if(!listing){
@@ -67,7 +67,7 @@ router.get("/:id/edit",wrapAsync(async(req,res)=>{
 }));
 
 //update route
-router.put("/:id",validateListing, wrapAsync(async(req,res)=>{
+router.put("/:id",isLoggedIn,validateListing,wrapAsync(async(req,res)=>{
     let {id} = req.params;
     await Listing.findByIdAndUpdate(id,{...req.body.listing});
     req.flash("success","Listing Updated");
@@ -76,7 +76,7 @@ router.put("/:id",validateListing, wrapAsync(async(req,res)=>{
 
 
 //Delete route
-router.delete("/:id",wrapAsync(async(req,res)=>{
+router.delete("/:id",isLoggedIn,wrapAsync(async(req,res)=>{
     let {id} = req.params;
     await Listing.findByIdAndDelete(id);
     req.flash("success","Listing Deleted");
