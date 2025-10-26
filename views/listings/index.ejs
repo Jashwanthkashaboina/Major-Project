@@ -7,7 +7,7 @@
     <% for(let listing of allListings){%>
         <a href="/listings/<%=listing._id%>" class="listing-link">
             <div class="card col listing-card" >
-                <img src="<%= listing.image %>" class="card-img-top" 
+                <img src="<%= listing.image.url %>" class="card-img-top" 
                 alt="<%= listing.title %>" 
                 style="height: 20rem;">
                     <!-- To add effect on card when we hover over it -->

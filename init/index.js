@@ -21,7 +21,6 @@ const mongoose = require("mongoose");
         owner: "68fa1abaad4d976ba7b42067",
         }
     ));
-    console.log(initData.data);
     await Listing.insertMany(initData.data); // we are using initData.data bcoz it is a object..in that object we need data
     console.log("data was inititalized");
 

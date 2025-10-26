@@ -27,18 +27,19 @@ module.exports.showListings = async(req,res)=>{
 
 
 module.exports.createListing = async(req, res) => {
-        if (!req.body.listing.image || req.body.listing.image.trim() === "") {
-            req.body.listing.image = "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=60";
-        }
-        const newListing = new Listing(req.body.listing);
-        //every time when we create listingg by default owner is not stored as we didnt created in schema
-        // so first we need to store the curr user information
-        //we know that passport store the user related info... in "req.user"
-        //req.user has access to many 
-        newListing.owner = req.user._id;
-        await newListing.save();
-        req.flash("success","New Listing created !");
-        res.redirect("/listings");
+    const newListing = new Listing(req.body.listing);
+    //every time when we create listingg by default owner is not stored as we didnt created in schema
+    // so first we need to store the curr user information
+    //we know that passport store the user related info... in "req.user"
+    //req.user has access to many
+    newListing.image = { 
+        url: req.file ? req.file.path : "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=60",
+        filename: req.file ? req.file.filename : "default"
+    };
+    newListing.owner = req.user._id;
+    await newListing.save();
+    req.flash("success","New Listing created !");
+    res.redirect("/listings");
 
 };
 
