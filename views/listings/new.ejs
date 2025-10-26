@@ -3,7 +3,8 @@
     <div class="col-8 offset-2">
 <h3>Create a new Listing</h3>
 <!-- <br/><br/> -->
-<form method="POST" action="/listings"  class="needs-validation" novalidate>
+<!-- "enctype"  this is encryption type to take img's pdf's etc as input -->
+<form method="POST" action="/listings"  novalidate  class="needs-validation" enctype="multipart/form-data">
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input name="listing[title]" 
@@ -20,10 +21,9 @@
         <div class="invalid-feedback">Please Enter a short description</div>
     </div>
     <div class="mb-3">
-        <label for="image" class="form-label">Image</label>
+        <label for="image" class="form-label">Upload Listing Image</label>
         <input name="listing[image]" 
-        placeholder="Enter image URL" 
-        type="text" class="form-control">
+        type="file" class="form-control">
     </div>
     <div class="row">
         <div class="mb-3 col-md-4">

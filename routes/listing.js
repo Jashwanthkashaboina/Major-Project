@@ -4,12 +4,20 @@ const  wrapAsync = require("../utils/wrapAsync.js");
 const Listing = require("../models/listing.js");//to use the model we created in listin.js first we need to require 
 const { isLoggedIn,isOwner,validateListing } = require("../middleware.js");
 const listingController = require("../controllers/listings.js");
+//Below one is Middleware for multipart/data
+const  multer = require("multer");
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
+
 
 router.route("/")
     // Index Route
     .get(wrapAsync(listingController.index))
     //Create Route
-    .post(isLoggedIn,validateListing,wrapAsync(listingController.createListing));
+    // .post(isLoggedIn,validateListing,wrapAsync(listingController.createListing));
+    .post(upload.single("listing[image]"),(req,res)=>{
+        res.send(req.file);
+    });
 
 // New Route -- To create a new Listing
 router.get("/new",isLoggedIn,listingController.renderNewForm);
