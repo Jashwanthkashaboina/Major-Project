@@ -14,6 +14,10 @@
                 <textarea name="listing[description]" type="text" class="form-control"><%= listing.description %></textarea>
             </div>
             <div class="mb-3">
+                Original Image <br/>
+                <img src="<%= originalImageUrl %>">
+            </div>
+            <div class="mb-3">
                 <label for="image" class="form-label">Upload New Image</label>
                 <input name="image" type="file" class="form-control">
                 <div class="invalid-feedback">Please Enter a valid Link</div>
