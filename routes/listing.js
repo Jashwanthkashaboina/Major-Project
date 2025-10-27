@@ -28,7 +28,7 @@ router.route("/:id")
     //update route
     //In middleWares ...First we'll check is user logged in 
     // next he has acces (authority--authorization) to that particular listing means he is owner or not!
-    .put(isLoggedIn,isOwner,validateListing,wrapAsync(listingController.updateListing))
+    .put(isLoggedIn,isOwner,upload.single("image"),validateListing,wrapAsync(listingController.updateListing))
 
     //Delete route
     .delete(isLoggedIn,isOwner,wrapAsync(listingController.deleteListing));
