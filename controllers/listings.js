@@ -1,6 +1,10 @@
 //This file contains Core Functionality of Backend
-const { model } = require("mongoose");
+const { model, Query } = require("mongoose");
 const Listing = require("../models/listing.js");
+const mbxgeoCoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapToken = process.env.MAP_TOKEN;
+const geocodingClient = mbxgeoCoding({ accessToken: mapToken });
+
 
 module.exports.index = async(req,res)=>{
     const allListings = await Listing.find({});
@@ -27,6 +31,16 @@ module.exports.showListings = async(req,res)=>{
 
 
 module.exports.createListing = async(req, res) => {
+    let response = await geocodingClient
+        .forwardGeocode({
+            query: req.body.listing.location,
+            limit: 1
+        })
+        .send();
+    
+    res.send("Done !");
+
+
     const newListing = new Listing(req.body.listing);
     //every time when we create listingg by default owner is not stored as we didnt created in schema
     // so first we need to store the curr user information
@@ -37,7 +51,9 @@ module.exports.createListing = async(req, res) => {
         filename: req.file ? req.file.filename : "default"
     };
     newListing.owner = req.user._id;
-    await newListing.save();
+    newListing.geometry = response.body.features[0].geometry;
+    let savedListing = await newListing.save();
+    console.log(savedListing);
     req.flash("success","New Listing created !");
     res.redirect("/listings");
 
