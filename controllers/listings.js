@@ -25,23 +25,31 @@ module.exports.showListings = async(req,res)=>{
         res.redirect("/listings");
         return;
     }
-    console.log(listing);
+    console.log(listing.geometry);
+    const coordinates = (listing.geometry && listing.geometry.coordinates.length)
+        ? listing.geometry.coordinates
+        : [74.8723, 31.6340]; // e.g., Amritsar
     res.render("listings/show.ejs",{ listing });
 };
 
 
 module.exports.createListing = async(req, res) => {
-    let response = await geocodingClient
+    let geoResponse  = await geocodingClient
         .forwardGeocode({
             query: req.body.listing.location,
             limit: 1
         })
         .send();
-    
-    res.send("Done !");
-
 
     const newListing = new Listing(req.body.listing);
+    if (geoResponse.body.features.length > 0) {
+        newListing.geometry = geoResponse.body.features[0].geometry;
+    } else {
+        newListing.geometry = {
+            type: "Point",
+            coordinates: [77.1025, 28.7041] // fallback: New Delhi
+        };
+    }
     //every time when we create listingg by default owner is not stored as we didnt created in schema
     // so first we need to store the curr user information
     //we know that passport store the user related info... in "req.user"
@@ -51,7 +59,6 @@ module.exports.createListing = async(req, res) => {
         filename: req.file ? req.file.filename : "default"
     };
     newListing.owner = req.user._id;
-    newListing.geometry = response.body.features[0].geometry;
     let savedListing = await newListing.save();
     console.log(savedListing);
     req.flash("success","New Listing created !");

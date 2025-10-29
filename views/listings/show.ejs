@@ -1,6 +1,7 @@
 <% layout("/layouts/boilerplate") %>
 <script>
     const mapToken = "<%= process.env.MAP_TOKEN %>";
+    const listing = <%- JSON.stringify(listing) %>;
 </script>
 <div class="row mt-3">
     <!-- here we made  2 diff cols like heading one col which occupies 8 cols -->
@@ -10,28 +11,28 @@
     <!-- here for remaining content we made anothter col -->
     <div class="card col-6 offset-3 show-card listing-card"> 
         <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image" >
-            <div class="card-body">
+        <div class="card-body">
                 <p class="card-text"> <i>Owned-By : <%= listing.owner.username %></i> </p>
                 <p class="card-text"> <%=listing.description%> </p>
                 <p class="card-text"> &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %></p>
                 <p class="card-text"> <%=listing.location%> </p>
                 <p class="card-text"> <%=listing.country%> </p>
             </div>
-    </div>
-    <br/>
-    <% if(currUser && currUser._id.equals(listing.owner._id)) {%>
-        <div class="btns mt-3">
-            <a href="/listings/<%=listing._id%>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
-            <br/><br/>
-            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
-                <button class="btn btn-dark offset-5">Delete</button>
-            </form>
         </div>
-    <% } %>
-    <hr/>
-    <div class="col-8 offset-3 mb-3">
-            <% if(currUser) {%>
-            <h4>Leave a Review</h4>
+        <br/>
+        <% if(currUser && currUser._id.equals(listing.owner._id)) {%>
+            <div class="btns mt-3">
+                <a href="/listings/<%=listing._id%>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
+                <br/><br/>
+                <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+                    <button class="btn btn-dark offset-5">Delete</button>
+                </form>
+            </div>
+            <% } %>
+            <hr/>
+            <div class="col-8 offset-3 mb-3">
+                <% if(currUser) {%>
+                    <h4>Leave a Review</h4>
             <form action="/listings/<%=listing._id%>/reviews" method="POST" novalidate class="needs-validation">
                 <div class="mb-3 mt-3">
                     <label for="review[rating]" class="form-label">Rating</label>
@@ -58,53 +59,54 @@
                 <button class="btn btn-outline-dark">Submit</button>
                 <hr/>
             </form>
-
-    <% } %>
-        <br/>
-        <% if(listing.reviews.length >0) {%>
-            <div class="row">
-                <p><b>All Reviews</b></p>
-                <%for(review of listing.reviews){ %>
-                    <div class="card col-5 ms-3 mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">@<%= review.author.username %></h5>
-                            <!-- The below line is TO Give Rating from starability -->
-                            <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
-                            <p class="card-text"> <%= review.comment %></p>
-                            <form class="mb-3" method="POST" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
-                                <button class="btn btn-sm btn-dark">Delete</button>
-                            </form>
+            
+            <% } %>
+            <br/>
+            <% if(listing.reviews.length >0) {%>
+                <div class="row">
+                    <p><b>All Reviews</b></p>
+                    <%for(review of listing.reviews){ %>
+                        <div class="card col-5 ms-3 mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">@<%= review.author.username %></h5>
+                                <!-- The below line is TO Give Rating from starability -->
+                                <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
+                                <p class="card-text"> <%= review.comment %></p>
+                                <form class="mb-3" method="POST" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
+                                    <button class="btn btn-sm btn-dark">Delete</button>
+                                </form>
+                            </div>
                         </div>
+                        <% } %>
                     </div>
-                <% } %>
-            </div>
-        <% } %>
-    </div>
-    <div class="col-6 offset-3 mb-3">
-        <h3>Where you'll be</h3>
-        <div id="map"></div>
-    </div>
-    <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (() => {
-            'use strict'
-
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            const forms = document.querySelectorAll('.needs-validation')
-
-            // Loop over them and prevent submission
-            Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-            if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-            }
-
-            form.classList.add('was-validated')
-                }, false)
-            })
-        })()
-    </script>
+                    <% } %>
+                </div>
+                <div class="col-6 offset-3 mb-3">
+                    <h3>Where you'll be</h3>
+                    <div id="map"></div>
+                </div>
+                <script>
+                    // Example starter JavaScript for disabling form submissions if there are invalid fields
+                    (() => {
+                        'use strict'
+                        
+                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                        const forms = document.querySelectorAll('.needs-validation')
+                        
+                        // Loop over them and prevent submission
+                        Array.from(forms).forEach(form => {
+                            form.addEventListener('submit', event => {
+                                if (!form.checkValidity()) {
+                                    event.preventDefault()
+                                    event.stopPropagation()
+                                }
+                                
+                                form.classList.add('was-validated')
+                            }, false)
+                        })
+                    })()
+                    </script>
 </div>
+
 
 <script src="/js/map.js"></script>
