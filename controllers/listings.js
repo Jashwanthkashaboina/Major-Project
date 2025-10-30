@@ -25,7 +25,7 @@ module.exports.showListings = async(req,res)=>{
         res.redirect("/listings");
         return;
     }
-    console.log(listing.geometry);
+    // console.log(listing.geometry);
     const coordinates = (listing.geometry && listing.geometry.coordinates.length)
         ? listing.geometry.coordinates
         : [74.8723, 31.6340]; // e.g., Amritsar
