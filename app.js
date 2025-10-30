@@ -53,9 +53,9 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname,"/public")));
 
 
-app.get("/",(req,res)=>{
-    res.send("Hi! I'm root");
-});
+// app.get("/",(req,res)=>{
+//     res.send("Hi! I'm root");
+// });
 
 app.use(session(sessionOptions));
 app.use(flash());
