@@ -36,7 +36,7 @@
             <form action="/listings/<%=listing._id%>/reviews" method="POST" novalidate class="needs-validation">
                 <div class="mb-3 mt-3">
                     <label for="review[rating]" class="form-label">Rating</label>
-                    <fieldset class="starability-slot">
+                    <fieldset class="starability-heart">
                         <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
                         <input type="radio" id="first-rate1" name="review[rating]" value="1" />
                         <label for="first-rate1" title="Terrible">1 star</label>
@@ -110,3 +110,6 @@
 
 
 <script src="/js/map.js"></script>
+
+
+
