@@ -1,7 +1,7 @@
 const User = require("../models/user.js");
 
 module.exports.renderSignupForm = (req,res)=>{
-    res.render("users/signup");
+    res.render("users/signup",{ hideSearchBar: true });
 };
 
 
@@ -10,7 +10,7 @@ module.exports.signup = async(req,res)=>{
         let {username,email,password} = req.body;
         const newUser = new User({email,username});
         const registeredUser = await User.register(newUser,password);
-        console.log(registeredUser);
+        // console.log(registeredUser);
         req.login(registeredUser,(err)=>{
             if(err){
                 return next(err);
@@ -28,7 +28,7 @@ module.exports.signup = async(req,res)=>{
 
 
 module.exports.renderLoginForm = (req,res)=>{
-    res.render("users/login.ejs");
+    res.render("users/login.ejs",{ hideSearchBar: true });
 };
 
 module.exports.login = async(req,res)=>{

@@ -23,7 +23,7 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.js"></script>
     </head>
 <body>
-    <%- include("../includes/navbar.ejs") %>
+    <%- include("../includes/navbar.ejs",{ hideSearchBar: typeof hideSearchBar !== "undefined" ? hideSearchBar : false }) %>
 
     <div class="container">
         <%- include("../includes/flash.ejs") %>
