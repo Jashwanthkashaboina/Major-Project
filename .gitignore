@@ -11,7 +11,4 @@ node_modules/
 dist/
 build/
 
-*.css linguist-detectable=false
-*.js linguist-detectable=true
-* linguist-language=JavaScript
 
