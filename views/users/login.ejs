@@ -1,4 +1,4 @@
-<% layout("/layouts/boilerplate") %>
+<!-- <% layout("/layouts/boilerplate") %>
 
 <div class="row mt-5">
     <h2 class="col-7 offset-4 mb-3">Welcome back to WanderSphere!</h2>
@@ -48,10 +48,66 @@
         })
         })()
     </script>
+  -->
 
 
+<% layout("/layouts/boilerplate") %>
+<div class="login-page">
 
+    <div class="login-card">
+        <h2 class="text-center mb-4">Welcome back to WanderSphere</h2>
 
+        <form method="POST" action="/login" class="needs-validation" novalidate>
 
+            <div class="mb-3">
+                <label for="username" class="form-label">User name</label>
+                <input 
+                    name="username"
+                    type="text"
+                    id="username"
+                    placeholder="Enter your username"
+                    class="form-control"
+                    required
+                >
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">User Name Required!</div>
+            </div>
 
- 
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input 
+                    name="password"
+                    type="password"
+                    id="password"
+                    placeholder="Enter password"
+                    class="form-control"
+                    required
+                >
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">password Required!</div>
+            </div>
+
+            <button class="btn btn-dark w-100 mt-2">Login</button>
+
+        </form>
+    </div>
+
+</div>
+
+<script>
+    // Bootstrap validation
+    (() => {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>

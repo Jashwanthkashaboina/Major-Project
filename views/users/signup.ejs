@@ -1,4 +1,4 @@
-<% layout("/layouts/boilerplate") %>
+<!-- <% layout("/layouts/boilerplate") %>
 
 <div class="container py-4">
     <div class="row justify-content-center">
@@ -7,13 +7,13 @@
 
             <form method="POST" action="/signup" class="needs-validation" novalidate>
                 
-                <!-- Username -->
                 <div class="mb-3">
                     <label for="username" class="form-label">User name</label>
                     <input 
                         name="username"
                         type="text"
                         id="username"
+                        placeholder="Enter your username"
                         class="form-control"
                         required
                     >
@@ -21,12 +21,12 @@
                     <div class="invalid-feedback">User Name Required!</div>
                 </div>
 
-                <!-- Email -->
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input 
                         name="email"
                         type="email"
+                        placeholder="Enter your email-id"
                         id="email"
                         class="form-control"
                         required
@@ -35,13 +35,13 @@
                     <div class="invalid-feedback">Email Required!</div>
                 </div>
 
-                <!-- Password -->
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input 
                         name="password"
                         type="password"
                         id="password"
+                        placeholder="create a password"
                         class="form-control"
                         required
                     >
@@ -49,7 +49,7 @@
                     <div class="invalid-feedback">Enter your password!</div>
                 </div>
 
-                <button class="btn btn-dark w-100 mt-2">Sign Up</button>
+                <button class="btn btn-dark w-40 col-5 offset-3 mt-2">Sign Up</button>
             </form>
         </div>
     </div>
@@ -71,4 +71,75 @@
         }, false)
     })
 })()
+</script> -->
+
+<% layout("/layouts/boilerplate") %>
+
+<div class="signup-page">
+
+    <div class="signup-card">
+        <h2 class="text-center mb-4">Sign Up on Wanderlust</h2>
+
+        <form method="POST" action="/signup" class="needs-validation" novalidate>
+
+            <div class="mb-3">
+                <label for="username" class="form-label">User name</label>
+                <input name="username" 
+                    type="text" 
+                    id="username"
+                    placeholder="Enter your username" 
+                    class="form-control" required
+                >
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">User Name Required!</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input name="email" 
+                    type="email" 
+                    id="email"
+                    placeholder="Enter your email-id" 
+                    class="form-control" required
+                >
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">Email-id required!</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input name="password"
+                    type="password" 
+                    id="password"
+                    placeholder="Create a password" 
+                    class="form-control" required
+                >
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">passoword Required!</div>
+            </div>
+
+            <button class="btn btn-dark w-100 mt-2">Sign Up</button>
+
+        </form>
+    </div>
+</div>
+
+
+<script>
+(() => {
+    'use strict'
+
+    const forms = document.querySelectorAll('.needs-validation')
+
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
 </script>
+
