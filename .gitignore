@@ -10,3 +10,7 @@ node_modules/
 # Build and distribution folders (if you have any build process)
 dist/
 build/
+
+*.css linguist-detectable=false
+*.js linguist-detectable=true
+
