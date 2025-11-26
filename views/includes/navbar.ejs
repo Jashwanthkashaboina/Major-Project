@@ -1,56 +1,186 @@
 <style>
-  .search-btn{
-    background-color: #fe424d;
+  /* ---- Airbnb Search Bar ---- */
+  .airbnb-search-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .airbnb-search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    padding: 0.5rem 0.7rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background: white;
+    gap: 0.7rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .airbnb-item {
+    padding: 0 0.7rem;
+    font-weight: 600;
+  }
+
+  .airbnb-item.light {
+    font-weight: 400;
+    color: #555;
+  }
+
+  .divider {
+    height: 20px;
+    width: 1px;
+    background-color: #ddd;
+  }
+
+  .airbnb-search-btn {
+    background-color: #ff385c;
     color: white;
-    border-radius: 25px;
-    padding: 0 1rem 0 1rem; 
-    /* top right bottom left -- padding this order */
-    
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  .search-btn:hover{
-    background-color: #fe424d;
-    color: white;
+
+  /* MOBILE SEARCH BAR */
+  .mobile-search-bar {
+    display: none;
   }
-  .search-btn i{
-    display: inline;
-    margin-right: 0.5rem;
-  }
-  .search-input{
-    border-radius: 25px;
-    padding: 0.5rem 3rem 0.5rem 3rem;
-    font-size: 1rem;
+
+  @media(max-width: 768px) {
+    .airbnb-search-container {
+      display: none !important;
+    }
+
+    .navbar-collapse {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+    .navbar-nav {
+      flex-direction: column !important;
+      gap: 0.75rem;
+    }
+
+    .mobile-search-bar {
+      display: block;
+      margin-bottom: 1rem;
+    }
   }
 </style>
 
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top py-4">
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-md navbar-light bg-white border-bottom shadow-sm sticky-top py-3">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/listings"><i class="fa-solid fa-compass"></i></a>
+
+    <!-- Logo -->
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-solid fa-compass"></i>
+      <span class="ms-1 fw-bold">WanderSphere</span>
+    </a>
+
+    <!-- Toggler -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-    data-bs-target="#navbarNavAltMarkup">
-    <span class="navbar-toggler-icon"></span>
+            data-bs-target="#navbarNavAltMarkup">
+      <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/listings"><b>WanderSphere</b></a>
+
+      <% if (!hideSearchBar) { %>
+
+      <!-- DESKTOP SEARCH BAR (CLICK TO OPEN MODAL) -->
+      <div class="airbnb-search-container d-none d-md-flex">
+        <div class="airbnb-search-box" data-bs-toggle="modal" data-bs-target="#searchModal">
+          <div class="airbnb-item">Anywhere</div>
+          <div class="divider"></div>
+
+          <div class="airbnb-item">Any week</div>
+          <div class="divider"></div>
+
+          <div class="airbnb-item light">Add guests</div>
+
+          <button class="airbnb-search-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
       </div>
-      <div class="navbar-nav ms-auto">
-        <% if(!hideSearchBar) {%>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2 search-input" type="search" placeholder="Search Destinations"/>
-              <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
-            </form>
-        <%}%>
-      </div>
-      <div class="navbar-nav ms-auto">
+
+      <!-- MOBILE SEARCH BAR -->
+      <form class="mobile-search-bar d-md-none">
+        <input class="form-control rounded-pill py-2" type="search" placeholder="Search destinations..."
+               data-bs-toggle="modal" data-bs-target="#searchModal">
+      </form>
+
+      <% } %>
+
+      <!-- RIGHT SIDE NAV -->
+      <div class="navbar-nav ms-md-auto">
+
         <a class="nav-link" href="/listings/new">Airbnb your home</a>
-        <% if(!currUser) {%>
-        <a class="nav-link" aria-current="page" href="/signup"><b>SignUp</b></a>
-        <a class="nav-link" href="/login"><b>Log in</b></a>
-        <%}%>
-        <% if(currUser) {%>
-            <a class="nav-link" href="/logout"><b>Log Out</b></a>
-        <%}%>
+
+        <% if (!currUser) { %>
+          <a class="nav-link fw-bold" href="/signup">Sign Up</a>
+          <a class="nav-link fw-bold" href="/login">Log In</a>
+        <% } %>
+
+        <% if (currUser) { %>
+          <a class="nav-link fw-bold" href="/logout">Log Out</a>
+        <% } %>
+
       </div>
+
     </div>
   </div>
 </nav>
+
+<!-- ================= SEARCH MODAL ================= -->
+<div class="modal fade" id="searchModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+
+      <h5 class="fw-bold mb-3">Search Listings</h5>
+
+      <!-- WHERE -->
+      <label class="fw-semibold">Where</label>
+      <input type="text" class="form-control mb-3" placeholder="Search destination...">
+
+      <!-- DATES -->
+      <label class="fw-semibold">Dates</label>
+      <div class="d-flex gap-2 mb-3">
+        <input type="date" class="form-control">
+        <input type="date" class="form-control">
+      </div>
+
+      <!-- GUESTS -->
+      <label class="fw-semibold">Guests</label>
+      <div class="d-flex align-items-center justify-content-between border rounded p-2 mb-3">
+        <span>Guests</span>
+
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-outline-secondary btn-sm guest-minus">-</button>
+          <span class="guest-count fw-bold">1</span>
+          <button class="btn btn-outline-secondary btn-sm guest-plus">+</button>
+        </div>
+      </div>
+
+      <!-- SUBMIT -->
+      <button class="btn w-100 text-white" style="background:#ff385c;">
+        <i class="fa-solid fa-magnifying-glass me-1"></i>
+        Search
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- ====JS FOR GUEST COUNTER ==== -->
+<script  src="js/navbarGuestCounter.js"></script>

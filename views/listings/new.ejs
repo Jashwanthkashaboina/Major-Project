@@ -1,78 +1,58 @@
 <% layout("/layouts/boilerplate.ejs") %>
 <div class="row mt-3">
     <div class="col-8 offset-2">
-<h3>Create a new Listing</h3>
-<!-- <br/><br/> -->
-<!-- "enctype"  this is encryption type to take img's pdf's etc as input -->
-<form method="POST" action="/listings"  novalidate  class="needs-validation" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input name="listing[title]" 
-            placeholder="Add a catchy title" 
-            type="text" 
-            class="form-control"
-            required>
-            <div class="valid-feedback">Title looks good!</div>
+        <h3>Create a new Listing</h3>
+        <!-- <br/><br/> -->
+        <!-- "enctype"  this is encryption type to take img's pdf's etc as input -->
+        <form method="POST" action="/listings"  novalidate  class="needs-validation" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input name="listing[title]" 
+                    placeholder="Add a catchy title" 
+                    type="text" 
+                    class="form-control"
+                    required>
+                    <div class="valid-feedback">Title looks good!</div>
+                    <div class="invalid-feedback">Please Enter a Catchy title</div>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea name="listing[description]"
+                type="text" class="form-control" required></textarea>
+                <div class="invalid-feedback">Please Enter a short description</div>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Upload Listing Image</label>
+                <input name="image" 
+                type="file" class="form-control" required>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-md-4">
+                    <label for="price" class="form-label">Price</label>
+                    <input name="listing[price]" 
+                    placeholder="1200" 
+                    class="form-control" required>
+                    <div class="invalid-feedback">Please Enter the price</div>
+                </div>
+
+
+                <div class="mb-3 col-md-8">
+                    <label for="location" class="form-label">Location</label>
+                    <input name="listing[location]" 
+                    placeholder="Jaipur,Rajasthan" 
+                    type="text" class="form-control" required>
+                    <div class="invalid-feedback">Location can't be Empty</div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="country" class="form-label">Country</label>
+                <input name="listing[country]" 
+                placeholder="India" 
+                type="text" class="form-control" required>
+                <div class="invalid-feedback">country field is empty</div>
+            </div>
+            <button class="btn btn-dark add-btn mt-3">Add</button>
+        </form>
     </div>
-    <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea name="listing[description]"
-        type="text" class="form-control" required></textarea>
-        <div class="invalid-feedback">Please Enter a short description</div>
-    </div>
-    <div class="mb-3">
-        <label for="image" class="form-label">Upload Listing Image</label>
-        <input name="image" 
-        type="file" class="form-control" required>
-    </div>
-    <div class="row">
-        <div class="mb-3 col-md-4">
-            <label for="price" class="form-label">Price</label>
-            <input name="listing[price]" 
-            placeholder="1200" 
-             class="form-control" required>
-            <div class="invalid-feedback">Please Enter the price</div>
-        </div>
-
-
-        <div class="mb-3 col-md-8">
-            <label for="location" class="form-label">Location</label>
-            <input name="listing[location]" 
-            placeholder="Jaipur,Rajasthan" 
-            type="text" class="form-control" required>
-            <div class="invalid-feedback">Location can't be Empty</div>
-        </div>
-    </div>
-    <div class="mb-3">
-        <label for="country" class="form-label">Country</label>
-        <input name="listing[country]" 
-        placeholder="India" 
-        type="text" class="form-control" required>
-        <div class="invalid-feedback">country field is empty</div>
-    </div>
-    <button class="btn btn-dark add-btn mt-3">Add</button>
-
-    <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (() => {
-        'use strict'
-
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        const forms = document.querySelectorAll('.needs-validation')
-
-        // Loop over them and prevent submission
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-            if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-            }
-
-            form.classList.add('was-validated')
-            }, false)
-        })
-        })()
-    </script>
-</form>
 </div>
-</div>
+<script src="/js/authenticate.js"></script>
